@@ -43,6 +43,17 @@ export class LoginPageComponent implements OnInit {
     })
   }
 
+  getTestAccount() {
+    const a = this.form.get('email').value
+    const b = this.form.value.password
+    console.log(a, b);
+
+    this.form.patchValue({
+      email: 'l@mail.com',
+      password: '123456'
+    })
+  }
+
   submit() {
     if (this.form.invalid) {
       return
@@ -63,5 +74,7 @@ export class LoginPageComponent implements OnInit {
       this.submitted = false
     })
   }
+
+
 }
 

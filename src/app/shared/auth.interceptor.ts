@@ -7,8 +7,10 @@ import {catchError} from 'rxjs/operators';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-
-  constructor(private auth: AuthService, private router: Router) {
+  constructor(
+    private auth: AuthService,
+    private router: Router
+  ) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -17,12 +19,13 @@ export class AuthInterceptor implements HttpInterceptor {
         setParams: {
           auth: this.auth.token
         }
-      });
+      })
     }
     return next.handle(req)
-      .pipe(catchError((error: HttpErrorResponse) => {
-          console.log('[Interceptor error]: ', error);
-          if(error.status === 401) {
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.log('[Interceptor Error]: ', error)
+          if (error.status === 401) {
             this.auth.logout()
             this.router.navigate(['/admin', 'login'], {
               queryParams: {
@@ -30,9 +33,8 @@ export class AuthInterceptor implements HttpInterceptor {
               }
             })
           }
-          return throwError(error);
+          return throwError(error)
         })
-      );
+      )
   }
-
 }
